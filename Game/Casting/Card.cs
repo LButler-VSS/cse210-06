@@ -4,12 +4,14 @@ namespace cse210_06.Game.Casting
 {
     public class Card : Actor
     {
+        private Body body;
 
         private Image image;
 
-        public Card()
+        public Card(Body body, Image image)
         {
-
+            this.body = body;
+            this.image = image;
         }
         public string Symbol
         { get; set; }
@@ -20,7 +22,9 @@ namespace cse210_06.Game.Casting
         public int Value
         { get; set; }
 
-        public int AceValue
-        { get; set; }
+        public Body GetBody()
+        {
+            return body;
+        }
     }
 }

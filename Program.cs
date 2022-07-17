@@ -7,7 +7,7 @@ namespace cse210_06
     {
         static void Main(string[] args)
         {
-            Director director = new Director();
+            Director director = new Director(SceneManager.VideoService);
             director.StartGame();
         }
     }

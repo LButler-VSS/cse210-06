@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace cse210_06.Game.Casting
 {
-    public class Deck
+    public class Deck : Actor
     {
         List<Card> deck = new List<Card>();
         private static Random rng = new Random();
@@ -25,30 +25,25 @@ namespace cse210_06.Game.Casting
                                 if (cardValue == 1)
                                 {
                                     card.Symbol = "Ace";
-                                    card.Value = 11;
-                                    card.AceValue = 1;
                                 }
                                 else if (cardValue == 11)
                                 {
                                     card.Symbol = "Jack";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 12)
                                 {
                                     card.Symbol = "Queen";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 13)
                                 {
                                     card.Symbol = "King";
-                                    card.Value = 10;
                                 }
                                 else
                                 {
                                     card.Symbol = Convert.ToString(cardValue);
-                                    card.Value = cardValue;
                                 }
                                 card.Suit = "Hearts";
+                                card.Value = cardValue;
                                 deck.Add(card);
                             }
                             break;
@@ -64,30 +59,25 @@ namespace cse210_06.Game.Casting
                                 if (cardValue == 1)
                                 {
                                     card.Symbol = "Ace";
-                                    card.Value = 11;
-                                    card.AceValue = 1;
                                 }
                                 else if (cardValue == 11)
                                 {
                                     card.Symbol = "Jack";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 12)
                                 {
                                     card.Symbol = "Queen";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 13)
                                 {
                                     card.Symbol = "King";
-                                    card.Value = 10;
                                 }
                                 else
                                 {
                                     card.Symbol = Convert.ToString(cardValue);
-                                    card.Value = cardValue;
                                 }
                                 card.Suit = "Spades";
+                                card.Value = cardValue;
                                 deck.Add(card);
                             }
                             break;
@@ -102,30 +92,25 @@ namespace cse210_06.Game.Casting
                                 if (cardValue == 1)
                                 {
                                     card.Symbol = "Ace";
-                                    card.Value = 11;
-                                    card.AceValue = 1;
                                 }
                                 else if (cardValue == 11)
                                 {
                                     card.Symbol = "Jack";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 12)
                                 {
                                     card.Symbol = "Queen";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 13)
                                 {
                                     card.Symbol = "King";
-                                    card.Value = 10;
                                 }
                                 else
                                 {
                                     card.Symbol = Convert.ToString(cardValue);
-                                    card.Value = cardValue;
                                 }
                                 card.Suit = "Diamonds";
+                                card.Value = cardValue;
                                 deck.Add(card);
                             }
                             break;
@@ -140,8 +125,6 @@ namespace cse210_06.Game.Casting
                                 if (cardValue == 1)
                                 {
                                     card.Symbol = "Ace";
-                                    card.Value = 11;
-                                    card.AceValue = 1;
                                 }
                                 else if (cardValue == 11)
                                 {
@@ -151,19 +134,17 @@ namespace cse210_06.Game.Casting
                                 else if (cardValue == 12)
                                 {
                                     card.Symbol = "Queen";
-                                    card.Value = 10;
                                 }
                                 else if (cardValue == 13)
                                 {
                                     card.Symbol = "King";
-                                    card.Value = 10;
                                 }
                                 else
                                 {
                                     card.Symbol = Convert.ToString(cardValue);
-                                    card.Value = cardValue;
                                 }
                                 card.Suit = "Clubs";
+                                card.Value = cardValue;
                                 deck.Add(card);
                             }
                             break;
