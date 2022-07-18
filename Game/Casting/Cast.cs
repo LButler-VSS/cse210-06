@@ -1,16 +1,27 @@
-using System;
 using System.Collections.Generic;
+
 
 namespace cse210_06.Game.Casting
 {
+    /// <summary>
+    /// A collection of actors.
+    /// </summary>
     public class Cast
     {
         private Dictionary<string, List<Actor>> actors = new Dictionary<string, List<Actor>>();
 
+        /// <summary>
+        /// Constructs a new instance of Cast.
+        /// </summary>
         public Cast()
         {
         }
 
+        /// <summary>
+        /// Adds the given actor to the given group.
+        /// </summary>
+        /// <param name="group">The group name.</param>
+        /// <param name="actor">The actor to add.</param>
         public void AddActor(string group, Actor actor)
         {
             if (!actors.ContainsKey(group))
@@ -24,6 +35,34 @@ namespace cse210_06.Game.Casting
             }
         }
 
+        /// <summary>
+        /// Clears the actors in the given group.
+        /// </summary>
+        /// <param name="group">The given group.</param>
+        public void ClearActors(string group)
+        {
+            if (actors.ContainsKey(group))
+            {
+                actors[group] = new List<Actor>();
+            }
+        }
+
+        /// <summary>
+        /// Clears all the actors in the cast.
+        /// </summary>
+        public void ClearAllActors()
+        {
+            foreach(string group in actors.Keys)
+            {
+                actors[group] = new List<Actor>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the actors in the given group. Returns an empty list if there aren't any.
+        /// </summary>
+        /// <param name="group">The group name.</param>
+        /// <returns>The list of actors.</returns>
         public List<Actor> GetActors(string group)
         {
             List<Actor> results = new List<Actor>();
@@ -34,6 +73,10 @@ namespace cse210_06.Game.Casting
             return results;
         }
 
+        /// <summary>
+        /// Gets all the actors in the cast.
+        /// </summary>
+        /// <returns>A list of all actors.</returns>
         public List<Actor> GetAllActors()
         {
             List<Actor> results = new List<Actor>();
@@ -44,6 +87,11 @@ namespace cse210_06.Game.Casting
             return results;
         }
 
+        /// <summary>
+        /// Gets the first actor in the given group.
+        /// </summary>
+        /// <param name="group">The group name.</param>
+        /// <returns>The first actor.</returns>
         public Actor GetFirstActor(string group)
         {
             Actor result = null;
@@ -57,6 +105,11 @@ namespace cse210_06.Game.Casting
             return result;
         }
 
+        /// <summary>
+        /// Removes the given actor from the given group.
+        /// </summary>
+        /// <param name="group">The group name.</param>
+        /// <param name="actor">The actor to remove.</param>
         public void RemoveActor(string group, Actor actor)
         {
             if (actors.ContainsKey(group))
@@ -64,5 +117,6 @@ namespace cse210_06.Game.Casting
                 actors[group].Remove(actor);
             }
         }
+
     }
 }

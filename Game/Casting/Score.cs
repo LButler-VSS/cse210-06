@@ -6,7 +6,7 @@ namespace cse210_06.Game.Casting
     {
         private int points = 0;
 
-        public Score()
+        public Score(bool debug = false) : base(debug)
         {
             AddPoints(0);
         }
@@ -14,7 +14,6 @@ namespace cse210_06.Game.Casting
         public void AddPoints(int points)
         {
             this.points += points;
-            SetText($"Score: {this.points}");
         }
     }
 }

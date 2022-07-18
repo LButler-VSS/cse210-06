@@ -7,154 +7,18 @@ namespace cse210_06.Game.Casting
     public class Deck : Actor
     {
         List<Card> deck = new List<Card>();
+        List<Card> dealt = new List<Card>();
         private static Random rng = new Random();
 
-        public Deck()
+        public Deck(bool debug = false) : base(debug)
         {
-            for (int j = 0; j < 5; j++)
-            {
-                switch (j)
-                {
-                    case 1:
-                        {
-                            int cardValue = 0;
-                            for (int i = 0; i < 13; i++)
-                            {
-                                Card card = new Card();
-                                cardValue++;
-                                if (cardValue == 1)
-                                {
-                                    card.Symbol = "Ace";
-                                }
-                                else if (cardValue == 11)
-                                {
-                                    card.Symbol = "Jack";
-                                }
-                                else if (cardValue == 12)
-                                {
-                                    card.Symbol = "Queen";
-                                }
-                                else if (cardValue == 13)
-                                {
-                                    card.Symbol = "King";
-                                }
-                                else
-                                {
-                                    card.Symbol = Convert.ToString(cardValue);
-                                }
-                                card.Suit = "Hearts";
-                                card.Value = cardValue;
-                                deck.Add(card);
-                            }
-                            break;
-                        }
-                    case 2:
-                        {
-
-                            int cardValue = 0;
-                            for (int i = 0; i < 13; i++)
-                            {
-                                Card card = new Card();
-                                cardValue++;
-                                if (cardValue == 1)
-                                {
-                                    card.Symbol = "Ace";
-                                }
-                                else if (cardValue == 11)
-                                {
-                                    card.Symbol = "Jack";
-                                }
-                                else if (cardValue == 12)
-                                {
-                                    card.Symbol = "Queen";
-                                }
-                                else if (cardValue == 13)
-                                {
-                                    card.Symbol = "King";
-                                }
-                                else
-                                {
-                                    card.Symbol = Convert.ToString(cardValue);
-                                }
-                                card.Suit = "Spades";
-                                card.Value = cardValue;
-                                deck.Add(card);
-                            }
-                            break;
-                        }
-                    case 3:
-                        {
-                            int cardValue = 0;
-                            for (int i = 0; i < 13; i++)
-                            {
-                                Card card = new Card();
-                                cardValue++;
-                                if (cardValue == 1)
-                                {
-                                    card.Symbol = "Ace";
-                                }
-                                else if (cardValue == 11)
-                                {
-                                    card.Symbol = "Jack";
-                                }
-                                else if (cardValue == 12)
-                                {
-                                    card.Symbol = "Queen";
-                                }
-                                else if (cardValue == 13)
-                                {
-                                    card.Symbol = "King";
-                                }
-                                else
-                                {
-                                    card.Symbol = Convert.ToString(cardValue);
-                                }
-                                card.Suit = "Diamonds";
-                                card.Value = cardValue;
-                                deck.Add(card);
-                            }
-                            break;
-                        }
-                    case 4:
-                        {
-                            int cardValue = 0;
-                            for (int i = 0; i < 13; i++)
-                            {
-                                Card card = new Card();
-                                cardValue++;
-                                if (cardValue == 1)
-                                {
-                                    card.Symbol = "Ace";
-                                }
-                                else if (cardValue == 11)
-                                {
-                                    card.Symbol = "Jack";
-                                    card.Value = 10;
-                                }
-                                else if (cardValue == 12)
-                                {
-                                    card.Symbol = "Queen";
-                                }
-                                else if (cardValue == 13)
-                                {
-                                    card.Symbol = "King";
-                                }
-                                else
-                                {
-                                    card.Symbol = Convert.ToString(cardValue);
-                                }
-                                card.Suit = "Clubs";
-                                card.Value = cardValue;
-                                deck.Add(card);
-                            }
-                            break;
-                        }
-                    default:
-                        break;
-                };
-            }
+            
         }
 
+        public void AddCard(Card card)
+        {
+            deck.Add(card);
+        }
 
         public void Shuffle()
         {
@@ -178,15 +42,23 @@ namespace cse210_06.Game.Casting
             */
         }
 
-        public List<Card> Deal(int i)
+        public List<Card> GetDeck()
         {
-            List<Card> dealtCards = new List<Card>();
+            return deck;
+        }
+
+        public List<Card> GetDealt()
+        {
+            return dealt;
+        }
+
+        public void Deal(int i)
+        {
             for (int j = 0; j < i; j++)
             {
-                dealtCards.Add(deck[0]);
+                dealt.Add(deck[0]);
                 deck.RemoveAt(0);
             }
-            return dealtCards;
         }
     }
 

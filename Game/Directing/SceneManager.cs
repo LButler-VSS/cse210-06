@@ -10,10 +10,7 @@ namespace cse210_06.Game.Directing
 {
     public class SceneManager
     {
-        public static AudioService AudioService = new RaylibAudioService();
         public static KeyboardService KeyboardService = new RaylibKeyboardService();
-        public static MouseService MouseService = new RaylibMouseService();
-        public static PhysicsService PhysicsService = new RaylibPhysicsService();
         public static VideoService VideoService = new RaylibVideoService(Constants.GAME_NAME,
             Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.BLACK);
 
@@ -26,10 +23,6 @@ namespace cse210_06.Game.Directing
             if (scene == Constants.NEW_GAME)
             {
                 PrepareNewGame(cast, script);
-            }
-            else if (scene == Constants.NEXT_LEVEL)
-            {
-                PrepareNextLevel(cast, script);
             }
             else if (scene == Constants.TRY_AGAIN)
             {
@@ -51,9 +44,7 @@ namespace cse210_06.Game.Directing
             AddLevel(cast);
             AddScore(cast);
             AddLives(cast);
-            AddBall(cast);
-            AddBricks(cast);
-            AddRacket(cast);
+            AddDeck(cast);
             AddDialog(cast, Constants.ENTER_TO_START);
 
             script.ClearAllActions();
@@ -68,34 +59,14 @@ namespace cse210_06.Game.Directing
             AddReleaseActions(script);
         }
 
-        private void ActivateBall(Cast cast)
+        /*private void ActivateBall(Cast cast)
         {
             Ball ball = (Ball)cast.GetFirstActor(Constants.BALL_GROUP);
             ball.Release();
-        }
-
-        private void PrepareNextLevel(Cast cast, Script script)
-        {
-            AddBall(cast);
-            AddBricks(cast);
-            AddRacket(cast);
-            AddDialog(cast, Constants.PREP_TO_LAUNCH);
-
-            script.ClearAllActions();
-
-            TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.IN_PLAY, 2, DateTime.Now);
-            script.AddAction(Constants.INPUT, ta);
-
-            AddOutputActions(script);
-
-            PlaySoundAction sa = new PlaySoundAction(AudioService, Constants.WELCOME_SOUND);
-            script.AddAction(Constants.OUTPUT, sa);
-        }
+        }*/
 
         private void PrepareTryAgain(Cast cast, Script script)
         {
-            AddBall(cast);
-            AddRacket(cast);
             AddDialog(cast, Constants.PREP_TO_LAUNCH);
 
             script.ClearAllActions();
@@ -109,12 +80,11 @@ namespace cse210_06.Game.Directing
 
         private void PrepareInPlay(Cast cast, Script script)
         {
-            ActivateBall(cast);
             cast.ClearActors(Constants.DIALOG_GROUP);
 
             script.ClearAllActions();
 
-            ControlRacketAction action = new ControlRacketAction(KeyboardService);
+            ControlPlayerAction action = new ControlPlayerAction(KeyboardService);
             script.AddAction(Constants.INPUT, action);
 
             AddUpdateActions(script);    
@@ -124,8 +94,6 @@ namespace cse210_06.Game.Directing
 
         private void PrepareGameOver(Cast cast, Script script)
         {
-            AddBall(cast);
-            AddRacket(cast);
             AddDialog(cast, Constants.WAS_GOOD_GAME);
 
             script.ClearAllActions();
@@ -140,56 +108,184 @@ namespace cse210_06.Game.Directing
         // casting methods
         // -----------------------------------------------------------------------------------------
 
-        private void AddBall(Cast cast)
+        private void AddDeck(Cast cast)
         {
-            cast.ClearActors(Constants.BALL_GROUP);
-        
-            int x = Constants.CENTER_X - Constants.BALL_WIDTH / 2;
-            int y = Constants.SCREEN_HEIGHT - Constants.RACKET_HEIGHT - Constants.BALL_HEIGHT;
-        
-            Point position = new Point(x, y);
-            Point size = new Point(Constants.BALL_WIDTH, Constants.BALL_HEIGHT);
+            Deck deck = new Deck();
+            cast.ClearActors(Constants.CARD_GROUP);
+
+            string suit = "";
+            string symbol = "";
+            string filename = "";
+            int value = 0;
+
+            Point position = new Point(0, 0);
+            Point size = new Point(Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
             Point velocity = new Point(0, 0);
-        
+
             Body body = new Body(position, size, velocity);
-            Image image = new Image(Constants.BALL_IMAGE);
-            Ball ball = new Ball(body, image, false);
-        
-            cast.AddActor(Constants.BALL_GROUP, ball);
-        }
 
-        private void AddBricks(Cast cast)
-        {
-            cast.ClearActors(Constants.BRICK_GROUP);
-
-            Stats stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
-            int level = stats.GetLevel() % Constants.BASE_LEVELS;
-            string filename = string.Format(Constants.LEVEL_FILE, level);
-            List<List<string>> rows = LoadLevel(filename);
-
-            for (int r = 0; r < rows.Count; r++)
+            for (int j = 0; j < 5; j++)
             {
-                for (int c = 0; c < rows[r].Count; c++)
+                switch (j)
                 {
-                    int x = Constants.FIELD_LEFT + c * Constants.BRICK_WIDTH;
-                    int y = Constants.FIELD_TOP + r * Constants.BRICK_HEIGHT;
+                    case 1:
+                        {
+                            value = 0;
+                            suit = "h";
+                            List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
+                            
+                            for (int i = 0; i < 13; i++)
+                            {
+                                filename = images[value];
+                                value++;
+                                
+                                if (value == 1)
+                                {
+                                    symbol = "Ace";
+                                }
+                                else if (value == 11)
+                                {
+                                    symbol = "Jack";
+                                }
+                                else if (value == 12)
+                                {
+                                    symbol = "Queen";
+                                }
+                                else if (value == 13)
+                                {
+                                    symbol = "King";
+                                }
+                                else
+                                {
+                                    symbol = Convert.ToString(value);
+                                }
+                                Image image = new Image(filename);
+                                Card card = new Card(body, image, symbol, suit, value);
+                                deck.AddCard(card);
+                            }
+                            break;
+                        }
+                    case 2:
+                        {
+                            value = 0;
+                            suit = "c";
+                            List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                    string color = rows[r][c][0].ToString();
-                    int frames = (int)Char.GetNumericValue(rows[r][c][1]);
-                    int points = Constants.BRICK_POINTS;
+                            for (int i = 0; i < 13; i++)
+                            {
+                                filename = images[value];
+                                value++;
+                                if (value == 1)
+                                {
+                                    symbol = "Ace";
+                                }
+                                else if (value == 11)
+                                {
+                                    symbol = "Jack";
+                                }
+                                else if (value == 12)
+                                {
+                                    symbol = "Queen";
+                                }
+                                else if (value == 13)
+                                {
+                                    symbol = "King";
+                                }
+                                else
+                                {
+                                    symbol = Convert.ToString(value);
+                                }
+                                Image image = new Image(filename);
+                                Card card = new Card(body, image, symbol, suit, value);
+                                deck.AddCard(card);
+                            }
+                            break;
+                        }
+                    case 3:
+                        {
+                            value = 0;
+                            suit = "s";
+                            List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                    Point position = new Point(x, y);
-                    Point size = new Point(Constants.BRICK_WIDTH, Constants.BRICK_HEIGHT);
-                    Point velocity = new Point(0, 0);
-                    List<string> images = Constants.BRICK_IMAGES[color].GetRange(0, frames);
+                            for (int i = 0; i < 13; i++)
+                            {
+                                filename = images[value];
+                                value++;
+                                if (value == 1)
+                                {
+                                    symbol = "Ace";
+                                }
+                                else if (value == 11)
+                                {
+                                    symbol = "Jack";
+                                }
+                                else if (value == 12)
+                                {
+                                    symbol = "Queen";
+                                }
+                                else if (value == 13)
+                                {
+                                    symbol = "King";
+                                }
+                                else
+                                {
+                                    symbol = Convert.ToString(value);
+                                }
+                                Image image = new Image(filename);
+                                Card card = new Card(body, image, symbol, suit, value);
+                                deck.AddCard(card);
+                            }
+                            break;
+                        }
+                    case 4:
+                        {
+                            value = 0;
+                            suit = "d";
+                            List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                    Body body = new Body(position, size, velocity);
-                    Animation animation = new Animation(images, Constants.BRICK_RATE, 1);
-                    
-                    Brick brick = new Brick(body, animation, points, false);
-                    cast.AddActor(Constants.BRICK_GROUP, brick);
-                }
+                            for (int i = 0; i < 13; i++)
+                            {
+                                filename = images[value];
+                                value++;
+                                if (value == 1)
+                                {
+                                    symbol = "Ace";
+                                }
+                                else if (value == 11)
+                                {
+                                    symbol = "Jack";
+                                }
+                                else if (value == 12)
+                                {
+                                    symbol = "Queen";
+                                }
+                                else if (value == 13)
+                                {
+                                    symbol = "King";
+                                }
+                                else
+                                {
+                                    symbol = Convert.ToString(value);
+                                }
+                                Image image = new Image(filename);
+                                Card card = new Card(body, image, symbol, suit, value);
+                                deck.AddCard(card);
+                            }
+                            break;
+                        }
+                    default:
+                        break;
+                };
             }
+
+            deck.Shuffle();
+            List<Card> list = deck.GetDeck();
+
+            foreach (Card card in list)
+            {
+                cast.AddActor(Constants.CARD_GROUP, card);
+            }
+            cast.AddActor(Constants.DECK_GROUP, deck);
         }
 
         private void AddDialog(Cast cast, string message)
@@ -227,24 +323,6 @@ namespace cse210_06.Game.Directing
 
             Label label = new Label(text, position);
             cast.AddActor(Constants.LIVES_GROUP, label);   
-        }
-
-        private void AddRacket(Cast cast)
-        {
-            cast.ClearActors(Constants.RACKET_GROUP);
-        
-            int x = Constants.CENTER_X - Constants.RACKET_WIDTH / 2;
-            int y = Constants.SCREEN_HEIGHT - Constants.RACKET_HEIGHT;
-        
-            Point position = new Point(x, y);
-            Point size = new Point(Constants.RACKET_WIDTH, Constants.RACKET_HEIGHT);
-            Point velocity = new Point(0, 0);
-        
-            Body body = new Body(position, size, velocity);
-            Animation animation = new Animation(Constants.RACKET_IMAGES, Constants.RACKET_RATE, 0);
-            Racket racket = new Racket(body, animation, false);
-        
-            cast.AddActor(Constants.RACKET_GROUP, racket);
         }
 
         private void AddScore(Cast cast)
@@ -287,44 +365,35 @@ namespace cse210_06.Game.Directing
 
         private void AddInitActions(Script script)
         {
-            script.AddAction(Constants.INITIALIZE, new InitializeDevicesAction(AudioService, 
-                VideoService));
+            script.AddAction(Constants.INITIALIZE, new InitializeDevicesAction(VideoService));
         }
 
         private void AddLoadActions(Script script)
         {
-            script.AddAction(Constants.LOAD, new LoadAssetsAction(AudioService, VideoService));
+            script.AddAction(Constants.LOAD, new LoadAssetsAction(VideoService));
         }
 
         private void AddOutputActions(Script script)
         {
             script.AddAction(Constants.OUTPUT, new StartDrawingAction(VideoService));
             script.AddAction(Constants.OUTPUT, new DrawHudAction(VideoService));
-            script.AddAction(Constants.OUTPUT, new DrawBallAction(VideoService));
-            script.AddAction(Constants.OUTPUT, new DrawBricksAction(VideoService));
-            script.AddAction(Constants.OUTPUT, new DrawRacketAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawCardAction(VideoService));
             script.AddAction(Constants.OUTPUT, new DrawDialogAction(VideoService));
             script.AddAction(Constants.OUTPUT, new EndDrawingAction(VideoService));
         }
 
         private void AddUnloadActions(Script script)
         {
-            script.AddAction(Constants.UNLOAD, new UnloadAssetsAction(AudioService, VideoService));
+            script.AddAction(Constants.UNLOAD, new UnloadAssetsAction(VideoService));
         }
 
         private void AddReleaseActions(Script script)
         {
-            script.AddAction(Constants.RELEASE, new ReleaseDevicesAction(AudioService, 
-                VideoService));
+            script.AddAction(Constants.RELEASE, new ReleaseDevicesAction(VideoService));
         }
 
         private void AddUpdateActions(Script script)
         {
-            script.AddAction(Constants.UPDATE, new MoveBallAction());
-            script.AddAction(Constants.UPDATE, new MoveRacketAction());
-            script.AddAction(Constants.UPDATE, new CollideBordersAction(PhysicsService, AudioService));
-            script.AddAction(Constants.UPDATE, new CollideBrickAction(PhysicsService, AudioService));
-            script.AddAction(Constants.UPDATE, new CollideRacketAction(PhysicsService, AudioService));
             script.AddAction(Constants.UPDATE, new CheckOverAction());     
         }
     }
