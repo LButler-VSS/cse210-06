@@ -5,35 +5,35 @@ namespace cse210_06.Game.Casting
     /// </summary>
     public class Stats : Actor
     {
-        private int level;
-        private int lives;
+        private int dealer;
+        private int player;
         private int score;
 
         /// <summary>
         /// Constructs a new instance of Actor.
         /// </summary>
-        public Stats(int level = 1, int lives = 3, int score = 0, 
+        public Stats(int dealer = 0, int player = 0, int score = 100, 
                 bool debug = false) : base(debug)
         {
-            this.level = level;
-            this.lives = lives;
+            this.dealer = dealer;
+            this.player = player;
             this.score = score;
         }
 
         /// <summary>
         /// Adds one level.
         /// </summary>
-        public void AddLevel()
+        public void SetDealerValue(int dealer)
         {
-            level++;
+            this.dealer = dealer;
         }
 
         /// <summary>
         /// Adds an extra life.
         /// </summary>
-        public void AddLife()
+        public void SetPlayerValue(int player)
         {
-            lives++;
+            this.player = player;
         }
 
         /// <summary>
@@ -49,18 +49,18 @@ namespace cse210_06.Game.Casting
         /// Gets the level.
         /// </summary>
         /// <returns>The level.</returns>
-        public int GetLevel()
+        public int GetDealerValue()
         {
-            return level;
+            return dealer;
         }
 
         /// <summary>
         /// Gets the lives.
         /// </summary>
         /// <returns>The lives.</returns>
-        public int GetLives()
+        public int GetPlayerValue()
         {
-            return lives;
+            return player;
         }
 
         /// <summary>
@@ -70,19 +70,6 @@ namespace cse210_06.Game.Casting
         public int GetScore()
         {
             return score;
-        }
-
-        /// <summary>
-        /// Removes a life.
-        /// </summary>
-        public void RemoveLife()
-        {
-            lives--;
-            if (lives <= 0)
-            {
-                lives = 0;
-            }
-        }
-        
+        }        
     }
 }

@@ -11,14 +11,18 @@ namespace cse210_06
         // ----------------------------------------------------------------------------------------- 
 
         // GAME
-        public static string GAME_NAME = "Batter";
+        public static string GAME_NAME = "BlackJack";
         public static int FRAME_RATE = 60;
 
         // SCREEN
         public static int SCREEN_WIDTH = 1040;
         public static int SCREEN_HEIGHT = 680;
         public static int CENTER_X = SCREEN_WIDTH / 2;
+        public static int CENTER_LEFT_X = SCREEN_WIDTH / 4;
+        public static int CENTER_RIGHT_X = SCREEN_WIDTH / 4 * 3;
         public static int CENTER_Y = SCREEN_HEIGHT / 2;
+        public static int CENTER_TOP_Y = SCREEN_HEIGHT / 4;
+        public static int CENTER_BOTTOM_Y = SCREEN_HEIGHT / 4 * 3;
 
         // FIELD
         public static int FIELD_TOP = 60;
@@ -29,11 +33,6 @@ namespace cse210_06
         // FONT
         public static string FONT_FILE = "Assets/Fonts/zorque.otf";
         public static int FONT_SIZE = 32;
-
-        // SOUND
-        public static string BOUNCE_SOUND = "Assets/Sounds/boing.wav";
-        public static string WELCOME_SOUND = "Assets/Sounds/start.wav";
-        public static string OVER_SOUND = "Assets/Sounds/over.wav";
 
         // TEXT
         public static int ALIGN_LEFT = 0;
@@ -91,9 +90,9 @@ namespace cse210_06
         public static string LEVEL_GROUP = "level";
         public static string LIVES_GROUP = "lives";
         public static string SCORE_GROUP = "score";
-        public static string LEVEL_FORMAT = "LEVEL: {0}";
-        public static string LIVES_FORMAT = "LIVES: {0}";
-        public static string SCORE_FORMAT = "SCORE: {0}";
+        public static string LEVEL_FORMAT = "DEALER HAND VALUE: {0}";
+        public static string LIVES_FORMAT = "YOUR HAND VALUE: {0}";
+        public static string SCORE_FORMAT = "POINTS: {0}";
 
         // DECK
         public static string CARD_GROUP = "card";
@@ -163,8 +162,8 @@ namespace cse210_06
                 } }
         };
 
-        public static int CARD_WIDTH = 50;
-        public static int CARD_HEIGHT = 73;
+        public static int CARD_WIDTH = 150;
+        public static int CARD_HEIGHT = 216;
 
         // DIALOG
         public static string DIALOG_GROUP = "dialogs";

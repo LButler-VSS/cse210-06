@@ -52,6 +52,11 @@ namespace cse210_06.Game.Casting
             return dealt;
         }
 
+        public void SetDealt(List<Card> dealt)
+        {
+            this.dealt = dealt;
+        }
+
         public void Deal(int i)
         {
             for (int j = 0; j < i; j++)

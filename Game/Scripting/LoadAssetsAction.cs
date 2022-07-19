@@ -16,7 +16,7 @@ namespace cse210_06.Game.Scripting
         public void Execute(Cast cast, Script script, ActionCallback callback)
         {
             videoService.LoadFonts("Assets/Fonts");
-            videoService.LoadImages("Assets/Images");
+            videoService.LoadImages("Assets/Images/CardFace");
         }
     }
 }

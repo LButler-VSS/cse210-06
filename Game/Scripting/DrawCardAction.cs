@@ -17,29 +17,32 @@ namespace cse210_06.Game.Scripting
         {
             Deck deck = (Deck)cast.GetFirstActor(Constants.DECK_GROUP);
             List<Card> list = deck.GetDealt();
+            int i = 0;
 
-            foreach (Card card in list) 
+            foreach (Actor actor in list) 
             {
-                if (card.IsDebug())
-                {
-                    int i = 0;
                     i++;
+
+                    Card card = (Card)actor;
                     Body body = card.GetBody();
                     Rectangle rectangle = body.GetRectangle();
                     Point size = rectangle.GetSize();
                     Point pos = rectangle.GetPosition();
                     if (i == 1)
                     {
+                        Image image = card.GetImage();
+                        Point position = body.GetPosition();
+                        videoService.DrawImage(image, position);
                         videoService.DrawRectangle(size, pos, Constants.PURPLE, true);
                     }
                     else
                     {
                         videoService.DrawRectangle(size, pos, Constants.PURPLE, false);
+                        Image image = card.GetImage();
+                        Point position = body.GetPosition();
+                        videoService.DrawImage(image, position);
                     }
-                    Image image = card.GetImage();
-                    Point position = body.GetPosition();
-                    videoService.DrawImage(image, position);
-                }
+                    
             }
         }
     }

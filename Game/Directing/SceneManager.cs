@@ -24,6 +24,10 @@ namespace cse210_06.Game.Directing
             {
                 PrepareNewGame(cast, script);
             }
+            else if (scene == Constants.NEXT_LEVEL)
+            {
+                PrepareNextLevel(cast, script);
+            }
             else if (scene == Constants.TRY_AGAIN)
             {
                 PrepareTryAgain(cast, script);
@@ -41,10 +45,11 @@ namespace cse210_06.Game.Directing
         private void PrepareNewGame(Cast cast, Script script)
         {
             AddStats(cast);
-            AddLevel(cast);
+            AddDealerValue(cast);
             AddScore(cast);
-            AddLives(cast);
+            AddPlayerValue(cast);
             AddDeck(cast);
+            AddDealt(cast);
             AddDialog(cast, Constants.ENTER_TO_START);
 
             script.ClearAllActions();
@@ -64,6 +69,18 @@ namespace cse210_06.Game.Directing
             Ball ball = (Ball)cast.GetFirstActor(Constants.BALL_GROUP);
             ball.Release();
         }*/
+
+        private void PrepareNextLevel(Cast cast, Script script)
+        {
+            AddDialog(cast, Constants.PREP_TO_LAUNCH);
+
+            script.ClearAllActions();
+
+            TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.IN_PLAY, 2, DateTime.Now);
+            script.AddAction(Constants.INPUT, ta);
+
+            AddOutputActions(script);
+        }
 
         private void PrepareTryAgain(Cast cast, Script script)
         {
@@ -110,9 +127,9 @@ namespace cse210_06.Game.Directing
 
         private void AddDeck(Cast cast)
         {
-            Deck deck = new Deck();
             cast.ClearActors(Constants.CARD_GROUP);
 
+            Deck deck = new Deck();
             string suit = "";
             string symbol = "";
             string filename = "";
@@ -122,7 +139,7 @@ namespace cse210_06.Game.Directing
             Point size = new Point(Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
             Point velocity = new Point(0, 0);
 
-            Body body = new Body(position, size, velocity);
+           
 
             for (int j = 0; j < 5; j++)
             {
@@ -160,6 +177,7 @@ namespace cse210_06.Game.Directing
                                     symbol = Convert.ToString(value);
                                 }
                                 Image image = new Image(filename);
+                                Body body = new Body(position, size, velocity);
                                 Card card = new Card(body, image, symbol, suit, value);
                                 deck.AddCard(card);
                             }
@@ -196,6 +214,7 @@ namespace cse210_06.Game.Directing
                                     symbol = Convert.ToString(value);
                                 }
                                 Image image = new Image(filename);
+                                Body body = new Body(position, size, velocity);
                                 Card card = new Card(body, image, symbol, suit, value);
                                 deck.AddCard(card);
                             }
@@ -232,6 +251,7 @@ namespace cse210_06.Game.Directing
                                     symbol = Convert.ToString(value);
                                 }
                                 Image image = new Image(filename);
+                                Body body = new Body(position, size, velocity);
                                 Card card = new Card(body, image, symbol, suit, value);
                                 deck.AddCard(card);
                             }
@@ -268,6 +288,7 @@ namespace cse210_06.Game.Directing
                                     symbol = Convert.ToString(value);
                                 }
                                 Image image = new Image(filename);
+                                Body body = new Body(position, size, velocity);
                                 Card card = new Card(body, image, symbol, suit, value);
                                 deck.AddCard(card);
                             }
@@ -279,15 +300,44 @@ namespace cse210_06.Game.Directing
             }
 
             deck.Shuffle();
-            List<Card> list = deck.GetDeck();
-
-            foreach (Card card in list)
-            {
-                cast.AddActor(Constants.CARD_GROUP, card);
-            }
+            deck.Deal(4);
             cast.AddActor(Constants.DECK_GROUP, deck);
         }
 
+        private void AddDealt(Cast cast) 
+        {
+            {
+                int i = 0;
+                int x = Constants.CENTER_LEFT_X - 170;
+                int y = Constants.CENTER_TOP_Y - 80;
+                Deck deck = (Deck)cast.GetFirstActor(Constants.DECK_GROUP);
+                List<Card> list = deck.GetDealt();
+
+                
+                foreach (Actor actor in list)
+                {
+                    i++;
+                    Card card = (Card)actor;
+                    Point point = new Point(x, y);
+                    Body body = card.GetBody();
+                    body.SetPosition(point);
+                    
+                    if (i == 2)
+                    {
+                        x = Constants.CENTER_LEFT_X - 170;
+                        y = Constants.CENTER_BOTTOM_Y - 120;
+                    }
+                    else
+                    {
+                        x += 110;
+                    }
+
+
+                }
+
+                deck.SetDealt(list);
+            }
+        }
         private void AddDialog(Cast cast, string message)
         {
             cast.ClearActors(Constants.DIALOG_GROUP);
@@ -300,7 +350,7 @@ namespace cse210_06.Game.Directing
             cast.AddActor(Constants.DIALOG_GROUP, label);   
         }
 
-        private void AddLevel(Cast cast)
+        private void AddDealerValue(Cast cast)
         {
             cast.ClearActors(Constants.LEVEL_GROUP);
 
@@ -312,7 +362,7 @@ namespace cse210_06.Game.Directing
             cast.AddActor(Constants.LEVEL_GROUP, label);
         }
 
-        private void AddLives(Cast cast)
+        private void AddPlayerValue(Cast cast)
         {
             cast.ClearActors(Constants.LIVES_GROUP);
 
@@ -342,21 +392,6 @@ namespace cse210_06.Game.Directing
             cast.ClearActors(Constants.STATS_GROUP);
             Stats stats = new Stats();
             cast.AddActor(Constants.STATS_GROUP, stats);
-        }
-
-        private List<List<string>> LoadLevel(string filename)
-        {
-            List<List<string>> data = new List<List<string>>();
-            using(StreamReader reader = new StreamReader(filename))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string row = reader.ReadLine();
-                    List<string> columns = new List<string>(row.Split(',', StringSplitOptions.TrimEntries));
-                    data.Add(columns);
-                }
-            }
-            return data;
         }
 
         // -----------------------------------------------------------------------------------------
