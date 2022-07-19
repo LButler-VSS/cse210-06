@@ -19,19 +19,13 @@ namespace cse210_06.Game.Scripting
         {
             if (nextScene == Constants.NEXT_LEVEL)
             {
-                if (keyboardService.IsKeyPressed(Constants.ENTER))
+                    
+                if (keyboardService.IsKeyPressed(Constants.LEFT))
                 {
                     Stats stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
                     stats.RemovePoints(25);
                     stats.SetBet(25);
-                    callback.OnNext(nextScene);
-                }
-            }
-            if (nextScene == Constants.IN_PLAY)
-            {
-                if (keyboardService.IsKeyPressed(Constants.LEFT))
-                {
-                    Stats stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
+                    stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
                     if (stats.GetScore() == 0)
                     {
                         callback.OnNext(nextScene);
@@ -45,6 +39,18 @@ namespace cse210_06.Game.Scripting
                     
                 }
                 if (keyboardService.IsKeyPressed(Constants.RIGHT))
+                {
+                    Stats stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
+                    stats.RemovePoints(25);
+                    stats.SetBet(25);
+                    callback.OnNext(nextScene);
+                }
+
+                    
+            }
+            if (nextScene == Constants.IN_PLAY)
+            {
+                if (keyboardService.IsKeyPressed(Constants.ENTER))
                 {
                     callback.OnNext(nextScene);
                 }

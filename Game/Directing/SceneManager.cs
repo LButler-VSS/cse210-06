@@ -50,7 +50,7 @@ namespace cse210_06.Game.Directing
             AddScore(cast);
             AddBet(cast);
             AddPlayerValue(cast);
-            AddDialog(cast, Constants.ENTER_TO_START);
+            AddDialog(cast, Constants.BET_INCREASE);
 
             script.ClearAllActions();
             AddInitActions(script);
@@ -65,13 +65,13 @@ namespace cse210_06.Game.Directing
         }
         private void PrepareNextLevel(Cast cast, Script script)
         {
-            AddDialog(cast, Constants.BET_INCREASE);
+            AddDialog(cast, Constants.ENTER_TO_START);
 
             script.ClearAllActions();
 
             ChangeSceneAction a = new ChangeSceneAction(KeyboardService, Constants.IN_PLAY);
             script.AddAction(Constants.INPUT, a);
-            AddFirstOutputActions(script);
+            AddOutputActions(script);
         }
 
         private void PrepareTryAgain(Cast cast, Script script)
