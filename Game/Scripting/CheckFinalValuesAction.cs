@@ -5,9 +5,9 @@ using cse210_06.Game.Services;
 
 namespace cse210_06.Game.Scripting
 {
-    public class CheckValuesAction : Action
+    public class CheckFinalValuesAction : Action
     {
-        public CheckValuesAction()
+        public CheckFinalValuesAction()
         {
         }
 
@@ -19,7 +19,6 @@ namespace cse210_06.Game.Scripting
 
             int dealervalue = 0;
             int playervalue = 0;
-            int i = 0;
 
             foreach (Actor actor in list)
             {
@@ -27,12 +26,8 @@ namespace cse210_06.Game.Scripting
                 Body body = card.GetBody();
                 Point point = body.GetPosition();
                 int y = point.GetY();
-                
-                if (y < Constants.CENTER_Y & i == 0)
-                {
-                    i++;
-                }
-                else if (y < Constants.CENTER_Y)
+
+                if (y < Constants.CENTER_Y)
                 {
                     if (card.GetValue() > 1)
                     {

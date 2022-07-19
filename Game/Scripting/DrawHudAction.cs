@@ -19,6 +19,7 @@ namespace cse210_06.Game.Scripting
             DrawLabel(cast, Constants.LEVEL_GROUP, Constants.LEVEL_FORMAT, stats.GetDealerValue());
             DrawLabel(cast, Constants.LIVES_GROUP, Constants.LIVES_FORMAT, stats.GetPlayerValue());
             DrawLabel(cast, Constants.SCORE_GROUP, Constants.SCORE_FORMAT, stats.GetScore());
+            DrawLabel(cast, Constants.BET_GROUP, Constants.BET_FORMAT, stats.GetBet());
         }
 
         private void DrawLabel(Cast cast, string group, string format, int data)

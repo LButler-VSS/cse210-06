@@ -48,6 +48,8 @@ namespace cse210_06
         // KEYS
         public static string LEFT = "left";
         public static string RIGHT = "right";
+        public static string UP = "up";
+        public static string DOWN = "down";
         public static string SPACE = "space";
         public static string ENTER = "enter";
         public static string PAUSE = "p";
@@ -90,9 +92,11 @@ namespace cse210_06
         public static string LEVEL_GROUP = "level";
         public static string LIVES_GROUP = "lives";
         public static string SCORE_GROUP = "score";
+        public static string BET_GROUP = "bet";
         public static string LEVEL_FORMAT = "DEALER HAND VALUE: {0}";
         public static string LIVES_FORMAT = "YOUR HAND VALUE: {0}";
         public static string SCORE_FORMAT = "POINTS: {0}";
+        public static string BET_FORMAT = "BET: {0}";
 
         // DECK
         public static string CARD_GROUP = "card";
@@ -169,11 +173,9 @@ namespace cse210_06
         public static string DIALOG_GROUP = "dialogs";
         public static string ENTER_TO_START = "PRESS ENTER TO START";
         public static string PREP_TO_LAUNCH = "PREPARING TO LAUNCH";
-        public static string LEFT_TO_HIT = "PRESS LEFT TO HIT";
-        public static string RIGHT_TO_STAND = "PRESS RIGHT TO STAND";
-        public static string RIGHT_TO_INCREASE = "PRESS RIGHT TO INCREASE BET";
-        public static string LEFT_TO_DECREASE = "PRESS LEFT TO DECREASE BET";
-        public static string ENTER_TO_BET = "PRESS ENTER TO BET";
+        public static string HIT = "HIT? UP = YES : DOWN = NO";
+        public static string BET_INCREASE = "INCREASE BET? LEFT = YES : RIGHT = NO";
+        public static string ROUND_OVER = "ROUND OVER";
         public static string WAS_GOOD_GAME = "GAME OVER";
 
     }

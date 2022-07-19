@@ -45,11 +45,11 @@ namespace cse210_06.Game.Directing
         private void PrepareNewGame(Cast cast, Script script)
         {
             AddStats(cast);
+            AddDeck(cast);
             AddDealerValue(cast);
             AddScore(cast);
+            AddBet(cast);
             AddPlayerValue(cast);
-            AddDeck(cast);
-            AddDealt(cast);
             AddDialog(cast, Constants.ENTER_TO_START);
 
             script.ClearAllActions();
@@ -59,45 +59,38 @@ namespace cse210_06.Game.Directing
             ChangeSceneAction a = new ChangeSceneAction(KeyboardService, Constants.NEXT_LEVEL);
             script.AddAction(Constants.INPUT, a);
 
-            AddOutputActions(script);
+            AddFirstOutputActions(script);
             AddUnloadActions(script);
             AddReleaseActions(script);
         }
-
-        /*private void ActivateBall(Cast cast)
-        {
-            Ball ball = (Ball)cast.GetFirstActor(Constants.BALL_GROUP);
-            ball.Release();
-        }*/
-
         private void PrepareNextLevel(Cast cast, Script script)
         {
-            AddDialog(cast, Constants.PREP_TO_LAUNCH);
+            AddDialog(cast, Constants.BET_INCREASE);
 
             script.ClearAllActions();
 
-            TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.IN_PLAY, 2, DateTime.Now);
-            script.AddAction(Constants.INPUT, ta);
-
-            AddOutputActions(script);
+            ChangeSceneAction a = new ChangeSceneAction(KeyboardService, Constants.IN_PLAY);
+            script.AddAction(Constants.INPUT, a);
+            AddFirstOutputActions(script);
         }
 
         private void PrepareTryAgain(Cast cast, Script script)
         {
-            AddDialog(cast, Constants.PREP_TO_LAUNCH);
+            AddDialog(cast, Constants.ROUND_OVER);
 
             script.ClearAllActions();
             
-            TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.IN_PLAY, 2, DateTime.Now);
+            TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.NEW_GAME, 2, DateTime.Now);
             script.AddAction(Constants.INPUT, ta);
             
-            AddUpdateActions(script);
-            AddOutputActions(script);
+            script.AddAction(Constants.UPDATE, new CheckFinalValuesAction());
+            AddFinalOutputActions(script);
         }
 
         private void PrepareInPlay(Cast cast, Script script)
         {
             cast.ClearActors(Constants.DIALOG_GROUP);
+            AddDialog(cast, Constants.HIT);
 
             script.ClearAllActions();
 
@@ -118,7 +111,8 @@ namespace cse210_06.Game.Directing
             TimedChangeSceneAction ta = new TimedChangeSceneAction(Constants.NEW_GAME, 5, DateTime.Now);
             script.AddAction(Constants.INPUT, ta);
 
-            AddOutputActions(script);
+            AddFinalOutputActions(script);
+            
         }
 
         // -----------------------------------------------------------------------------------------
@@ -127,7 +121,7 @@ namespace cse210_06.Game.Directing
 
         private void AddDeck(Cast cast)
         {
-            cast.ClearActors(Constants.CARD_GROUP);
+            cast.ClearActors(Constants.DECK_GROUP);
 
             Deck deck = new Deck();
             string suit = "";
@@ -151,24 +145,27 @@ namespace cse210_06.Game.Directing
                             suit = "h";
                             List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
                             
-                            for (int i = 0; i < 13; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 filename = images[value];
-                                value++;
+                                if (value < 10)
+                                {
+                                    value++;
+                                }
                                 
-                                if (value == 1)
+                                if (i == 1)
                                 {
                                     symbol = "Ace";
                                 }
-                                else if (value == 11)
+                                else if (i == 11)
                                 {
                                     symbol = "Jack";
                                 }
-                                else if (value == 12)
+                                else if (i == 12)
                                 {
                                     symbol = "Queen";
                                 }
-                                else if (value == 13)
+                                else if (i == 13)
                                 {
                                     symbol = "King";
                                 }
@@ -189,23 +186,26 @@ namespace cse210_06.Game.Directing
                             suit = "c";
                             List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                            for (int i = 0; i < 13; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 filename = images[value];
-                                value++;
-                                if (value == 1)
+                                if (value < 10)
+                                {
+                                    value++;
+                                }
+                                if (i == 1)
                                 {
                                     symbol = "Ace";
                                 }
-                                else if (value == 11)
+                                else if (i == 11)
                                 {
                                     symbol = "Jack";
                                 }
-                                else if (value == 12)
+                                else if (i == 12)
                                 {
                                     symbol = "Queen";
                                 }
-                                else if (value == 13)
+                                else if (i == 13)
                                 {
                                     symbol = "King";
                                 }
@@ -226,23 +226,26 @@ namespace cse210_06.Game.Directing
                             suit = "s";
                             List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                            for (int i = 0; i < 13; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 filename = images[value];
-                                value++;
-                                if (value == 1)
+                                if (value < 10)
+                                {
+                                    value++;
+                                }
+                                if (i == 1)
                                 {
                                     symbol = "Ace";
                                 }
-                                else if (value == 11)
+                                else if (i == 11)
                                 {
                                     symbol = "Jack";
                                 }
-                                else if (value == 12)
+                                else if (i == 12)
                                 {
                                     symbol = "Queen";
                                 }
-                                else if (value == 13)
+                                else if (i == 13)
                                 {
                                     symbol = "King";
                                 }
@@ -263,23 +266,26 @@ namespace cse210_06.Game.Directing
                             suit = "d";
                             List<string> images = Constants.CARD_IMAGES[suit].GetRange(0, 13);
 
-                            for (int i = 0; i < 13; i++)
+                            for (int i = 1; i < 14; i++)
                             {
                                 filename = images[value];
-                                value++;
-                                if (value == 1)
+                                if (value < 10)
+                                {
+                                    value++;
+                                }
+                                if (i == 1)
                                 {
                                     symbol = "Ace";
                                 }
-                                else if (value == 11)
+                                else if (i == 11)
                                 {
                                     symbol = "Jack";
                                 }
-                                else if (value == 12)
+                                else if (i == 12)
                                 {
                                     symbol = "Queen";
                                 }
-                                else if (value == 13)
+                                else if (i == 13)
                                 {
                                     symbol = "King";
                                 }
@@ -304,40 +310,6 @@ namespace cse210_06.Game.Directing
             cast.AddActor(Constants.DECK_GROUP, deck);
         }
 
-        private void AddDealt(Cast cast) 
-        {
-            {
-                int i = 0;
-                int x = Constants.CENTER_LEFT_X - 170;
-                int y = Constants.CENTER_TOP_Y - 80;
-                Deck deck = (Deck)cast.GetFirstActor(Constants.DECK_GROUP);
-                List<Card> list = deck.GetDealt();
-
-                
-                foreach (Actor actor in list)
-                {
-                    i++;
-                    Card card = (Card)actor;
-                    Point point = new Point(x, y);
-                    Body body = card.GetBody();
-                    body.SetPosition(point);
-                    
-                    if (i == 2)
-                    {
-                        x = Constants.CENTER_LEFT_X - 170;
-                        y = Constants.CENTER_BOTTOM_Y - 120;
-                    }
-                    else
-                    {
-                        x += 110;
-                    }
-
-
-                }
-
-                deck.SetDealt(list);
-            }
-        }
         private void AddDialog(Cast cast, string message)
         {
             cast.ClearActors(Constants.DIALOG_GROUP);
@@ -386,12 +358,34 @@ namespace cse210_06.Game.Directing
             Label label = new Label(text, position);
             cast.AddActor(Constants.SCORE_GROUP, label);   
         }
+        private void AddBet(Cast cast)
+        {
+            cast.ClearActors(Constants.BET_GROUP);
+
+            Text text = new Text(Constants.BET_FORMAT, Constants.FONT_FILE, Constants.FONT_SIZE, 
+                Constants.ALIGN_CENTER, Constants.WHITE);
+            Point position = new Point(Constants.CENTER_X, Constants.HUD_MARGIN + 30);
+            
+            Label label = new Label(text, position);
+            cast.AddActor(Constants.BET_GROUP, label);   
+        }
 
         private void AddStats(Cast cast)
         {
-            cast.ClearActors(Constants.STATS_GROUP);
-            Stats stats = new Stats();
-            cast.AddActor(Constants.STATS_GROUP, stats);
+            if (cast.GetActors(Constants.STATS_GROUP).Count == 0)
+            {
+                cast.ClearActors(Constants.STATS_GROUP);
+                Stats stats = new Stats();
+                cast.AddActor(Constants.STATS_GROUP, stats);
+            }
+            else
+            {
+                Stats stats = (Stats)cast.GetFirstActor(Constants.STATS_GROUP);
+                stats.SetDealerValue(0);
+                stats.SetPlayerValue(0);
+                stats.SetBet(0);
+            }
+
         }
 
         // -----------------------------------------------------------------------------------------
@@ -408,12 +402,29 @@ namespace cse210_06.Game.Directing
             script.AddAction(Constants.LOAD, new LoadAssetsAction(VideoService));
         }
 
+        private void AddFirstOutputActions(Script script)
+        {
+            script.AddAction(Constants.OUTPUT, new StartDrawingAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawHudAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawDialogAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new EndDrawingAction(VideoService));
+        }
         private void AddOutputActions(Script script)
         {
             script.AddAction(Constants.OUTPUT, new StartDrawingAction(VideoService));
             script.AddAction(Constants.OUTPUT, new DrawHudAction(VideoService));
             script.AddAction(Constants.OUTPUT, new DrawCardAction(VideoService));
             script.AddAction(Constants.OUTPUT, new DrawDialogAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new EndDrawingAction(VideoService));
+        }
+        
+        private void AddFinalOutputActions(Script script)
+        {
+            script.AddAction(Constants.OUTPUT, new StartDrawingAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawHudAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawCardAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawDialogAction(VideoService));
+            script.AddAction(Constants.OUTPUT, new DrawFirstCardAction(VideoService));
             script.AddAction(Constants.OUTPUT, new EndDrawingAction(VideoService));
         }
 
@@ -429,7 +440,8 @@ namespace cse210_06.Game.Directing
 
         private void AddUpdateActions(Script script)
         {
-            script.AddAction(Constants.UPDATE, new CheckOverAction());     
+            script.AddAction(Constants.UPDATE, new CheckValuesAction());
+            script.AddAction(Constants.UPDATE, new CheckOverAction());
         }
     }
 }

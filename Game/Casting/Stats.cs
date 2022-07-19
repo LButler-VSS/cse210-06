@@ -8,16 +8,18 @@ namespace cse210_06.Game.Casting
         private int dealer;
         private int player;
         private int score;
+        private int bet;
 
         /// <summary>
         /// Constructs a new instance of Actor.
         /// </summary>
-        public Stats(int dealer = 0, int player = 0, int score = 100, 
+        public Stats(int dealer = 0, int player = 0, int score = 100, int bet = 0,
                 bool debug = false) : base(debug)
         {
             this.dealer = dealer;
             this.player = player;
             this.score = score;
+            this.bet = bet;
         }
 
         /// <summary>
@@ -45,6 +47,15 @@ namespace cse210_06.Game.Casting
             score += points;
         }
 
+        public void RemovePoints(int points)
+        {
+            score -= points;
+        }
+
+        public void SetBet(int bet)
+        {
+            this.bet = bet;
+        }
         /// <summary>
         /// Gets the level.
         /// </summary>
@@ -71,5 +82,24 @@ namespace cse210_06.Game.Casting
         {
             return score;
         }        
+
+        public int GetBet()
+        {
+            return bet;
+        }
+
+        public void WinBet()
+        {
+            int reward = 50;
+            if (bet == 50)
+                reward = 100;
+            AddPoints(reward);
+            SetBet(0);
+        }
+
+        public void LoseBet()
+        {
+            SetBet(0);
+        }
     }
 }

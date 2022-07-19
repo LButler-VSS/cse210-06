@@ -30,5 +30,10 @@ namespace cse210_06.Game.Casting
         {
             return image;
         }
+
+        public int GetValue()
+        {
+            return value;
+        }
     }
 }

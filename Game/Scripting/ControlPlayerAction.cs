@@ -17,17 +17,15 @@ namespace cse210_06.Game.Scripting
         {
             Deck deck = (Deck)cast.GetFirstActor(Constants.DECK_GROUP);
 
-            if (keyboardService.IsKeyDown(Constants.LEFT))
+            if (keyboardService.IsKeyPressed(Constants.UP))
             {
                 deck.Deal(1);
+                callback.OnNext(Constants.IN_PLAY);
             }
-            else if (keyboardService.IsKeyDown(Constants.RIGHT))
+            if (keyboardService.IsKeyPressed(Constants.DOWN))
             {
-
-            }
-            else
-            {
-
+                script.AddAction(Constants.UPDATE, new CheckFinalValuesAction());
+                script.AddAction(Constants.UPDATE, new CheckWinnerAction());
             }
         }
     }
